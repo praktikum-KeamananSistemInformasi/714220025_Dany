@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StressMeter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+   
+    <div class="container">
+      <nav>
+        <a href="/index.html">Praktikum 1</a>
+        <a href="/Stressmetter/index.html">Praktikum 2</a>
+      </nav>
+      <h1>StressMeter</h1>
+
+      <!-- Dropdown untuk Aset -->
+      <label for="asset-dropdown">Pilih Aset:</label>
+      <select id="asset-dropdown">
+        <option value="server">Server Aplikasi</option>
+        <option value="database">Database Pengguna</option>
+        <option value="api">API Eksternal</option>
+        <option value="delivery">Sistem Pengiriman</option>
+      </select>
+
+      <!-- Dropdown untuk STRIDE -->
+      <label for="stride-dropdown">Pilih STRIDE:</label>
+      <select id="stride-dropdown">
+        <option value="spoofing">Spoofing</option>
+        <option value="tampering">Tampering</option>
+        <option value="repudiation">Repudiation</option>
+        <option value="information_disclosure">Information Disclosure</option>
+        <option value="denial_of_service">Denial of Service</option>
+        <option value="elevation_of_privilege">Elevation of Privilege</option>
+        <option value="security_misconfiguration">
+          Security Misconfiguration
+        </option>
+        <option value="insecure_deserialization">
+          Insecure Deserialization
+        </option>
+      </select>
+
+      <!-- Elemen untuk menampilkan penjelasan STRIDE -->
+      <p id="stride-description" style="font-style: italic; color: #000000"></p>
+
+      <!-- Dropdown untuk DREAD -->
+      <div class="dread-inputs">
+        <label for="damage">Damage (D):</label>
+        <select id="damage">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <label for="reproducibility">Reproducibility (R):</label>
+        <select id="reproducibility">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <label for="exploitability">Exploitability (E):</label>
+        <select id="exploitability">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <label for="affectedUsers">Affected Users (A):</label>
+        <select id="affectedUsers">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <label for="discoverability">Discoverability (D):</label>
+        <select id="discoverability">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+
+      <!-- Dropdown untuk jenis chart -->
+      <label for="chart-type">Pilih Jenis Chart:</label>
+      <select id="chart-type">
+        <option value="radar">Radar</option>
+        <option value="bar">Bar</option>
+        <option value="line">Line</option>
+      </select>
+
+      <!-- Tombol Submit -->
+      <button id="submit">Tampilkan Grafik</button>
+
+      <!-- Kontainer Grafik -->
+      <canvas id="chart"></canvas>
+
+      <!-- Tabel Mitigasi Risiko -->
+      <h2>Mitigasi Risiko</h2>
+      <table id="risk-table">
+        <thead>
+          <tr>
+            <th>Aset</th>
+            <th>Ancaman yang Dipilih</th>
+            <th>Total Nilai Ancaman</th>
+            <th>Tindakan Mitigasi</th>
+            <th>Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data akan diisi oleh JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
