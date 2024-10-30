@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encryption/Decryption Example</title>
+  <link rel="stylesheet" href="style.css">
+
+<style>
+
+    :root{
+    --primary-color: #ec0b43;
+  --secondary-color: #58355e;
+  --teks-color-1: #f9ed5b;
+  --teks-color-2: #acff6c;
+  --teks-color-3: #7ae7c7;
+    }
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  color: var(--primary-color)   ;
+}
+
+form label {
+  display: block;
+  margin-top: 10px;
+}
+
+form input, form select, form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid var(--teks-color-2);
+  border-radius: 5px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: ease-in-out .2s;
+}
+
+button:hover {
+  background-color: #fa6060;
+}
+
+#result {
+    background-color: var(--teks-color-2);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+#algoExplanation {
+  background-color: var(--teks-color-2);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Encryption/Decryption Tool</h1>
+        <form id="cryptoForm">
+          <label for="algo">Select Algorithm:</label>
+          <select id="algo" name="algo">
+            <option value="AES">AES</option>
+            <option value="DES">DES</option>
+            <option value="TripleDES">Triple DES</option>
+            <option value="Rabbit">Rabbit</option>
+            <option value="RC4">RC4</option>
+          </select>
+    
+          <label for="mode">Mode:</label>
+          <select id="mode" name="mode">
+            <option value="encrypt">Encrypt</option>
+            <option value="decrypt">Decrypt</option>
+          </select>
+    
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" rows="4" placeholder="Masukkan teks disini..."></textarea>
+    
+          <label for="key">Key:</label>
+          <input type="text" id="key" name="key" placeholder="Optional">
+    
+          <button type="button" id="execute">Execute</button>
+        </form>
+    
+        <h3>Result:</h3>
+        <textarea id="result" rows="4" readonly></textarea>
+    
+        <h3>Algorithm Explanation:</h3>
+        <div id="algoExplanation"></div>
+      </div>
+
+  <script>
+
+function updateAlgorithmExplanation() {
+  const algorithm = document.getElementById('algo').value;
+  const explanationContainer = document.getElementById('algoExplanation');
+  let explanationHTML = '';
+
+  if (algorithm === 'AES') {
+    explanationHTML = `
+      <p>
+        <b>Rumus : </b>Ciphertext = AES_encrypt(Plaintext, Key, IV)<br><br>
+        <b>Kunci : </b>Kunci acak sepanjang 256 bit dihasilkan.<br><br>
+        <b>IV : </b>Vektor inisialisasi sepanjang 16 byte yang dihasilkan secara acak.<br><br>
+        <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan AES dengan kunci dan IV.<br><br>
+        <b>Penjelasan : </b>Algoritma enkripsi AES (Advanced Encryption Standard) adalah salah satu algoritma simetris yang paling umum digunakan untuk keamanan data. AES bekerja dengan blok data berukuran tetap (128 bit atau 16 byte), dan kunci enkripsi yang dapat bervariasi antara 128, 192, atau 256 bit.<br>
+      </p>
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGK3F_ghixpsvdJqJrUPEeCC6ynx_Yd5xefg&s" alt="AES Diagram" style="max-width:100%;">
+    `;
+  } else if (algorithm === 'DES') {
+    explanationHTML = `
+      <p>
+        <b>Rumus : </b>Ciphertext = DES_encrypt(Plaintext, Key)<br><br>
+        <b>Kunci : </b>Kunci simetris sepanjang 56 bit digunakan.<br><br>
+        <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan DES dalam blok-blok 64 bit.<br><br>
+        <b>Penjelasan : </b>DES (Data Encryption Standard) adalah algoritma enkripsi blok yang bekerja pada blok data sepanjang 64 bit dan menggunakan kunci sepanjang 56 bit. DES sekarang dianggap kurang aman karena panjang kunci yang terlalu pendek.<br>
+      </p>
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRChSYCQVChgJN6a8GRmbP2cCV-BzYjI9s1gg&s" alt="DES Diagram" style="max-width:100%;">
+    `;
+  } else if (algorithm === 'TripleDES') {
+    explanationHTML = `
+      <p>
+        <b>Rumus : </b>Ciphertext = TripleDES_encrypt(Plaintext, Key1, Key2, Key3)<br><br>
+        <b>Kunci : </b>Tiga kunci berbeda digunakan, masing-masing sepanjang 56 bit.<br><br>
+        <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan tiga kali proses DES dengan kunci yang berbeda.<br><br>
+        <b>Penjelasan : </b>Triple DES menggunakan algoritma DES tiga kali berturut-turut pada data dengan kunci yang berbeda, sehingga lebih aman daripada DES standar.<br>
+      </p>
+      <img src="https://i.ytimg.com/vi/grCTYkvYxcA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBXVkBacWMryD1FNIAy2-qkfCEP9A" alt="Triple DES Diagram" style="max-width:100%;">
+    `;
+  } else if (algorithm === 'Rabbit') {
+    explanationHTML = `
+      <p>
+        <b>Rumus : </b>Ciphertext = Rabbit_encrypt(Plaintext, Key)<br><br><br>
+        <b>Kunci : </b>Kunci acak sepanjang 128 bit digunakan.<br><br><br>
+        <b>Penjelasan : </b>Algoritma Rabbit Cipher adalah sebuah algoritma kriptografi yang termasuk dalam kategori stream cipher (sandi aliran). Algoritma ini dikembangkan pada tahun 2003 oleh Bart Preneel dan Vincent Rijmen. Salah satu keunggulan utama dari Rabbit Cipher adalah efisiensinya dalam hal kecepatan enkripsi dan dekripsi, terutama pada perangkat keras dengan sumber daya terbatas<br><br><br>
+        <b>Karakteristik : </b><br><br><b>Stream Cipher: </b>Rabbit Cipher mengenkripsi data dengan mengolah aliran bit atau byte satu per satu, berbeda dengan block cipher yang mengenkripsi blok data sekaligus.<br><br><b>Kunci Enkripsi: </b>Rabbit menggunakan kunci enkripsi sepanjang 128-bit. Kunci ini menghasilkan serangkaian pseudorandom number yang kemudian digunakan untuk mengenkripsi atau mendekripsi data.<br><br><b>Efisiensi Tinggi: </b>Algoritma ini dirancang untuk efisiensi tinggi baik pada perangkat lunak maupun perangkat keras, menjadikannya sangat cepat dan cocok untuk penggunaan real-time seperti pada jaringan atau komunikasi mobile.<br><br>
+
+<b>Tidak Memerlukan S-box: </b>Berbeda dengan banyak algoritma kriptografi lain, Rabbit Cipher tidak menggunakan tabel substitusi atau S-box dalam proses enkripsinya, yang menyederhanakan desain algoritma.<br><br><br>
+     
+        <b>Cara Kerja : </b>Rabbit Cipher bekerja dengan menghasilkan stream bit pseudorandom yang disebut key stream, yang kemudian di-XOR (exclusive OR) dengan teks asli (plaintext) untuk menghasilkan teks terenkripsi (ciphertext). Key stream ini dihasilkan melalui kombinasi dari register keadaan internal yang diperbarui berdasarkan algoritma tertentu<br><br>
+        Rabbit Cipher cocok untuk aplikasi yang membutuhkan enkripsi cepat dengan sumber daya terbatas, seperti dalam protokol komunikasi atau enkripsi pada perangkat kecil seperti sensor atau perangkat mobile.<br><br><br>
+
+</p>
+      <img src="https://example.com/rabbit-diagram.png" alt="Rabbit Diagram" style="max-width:100%;">
+    `;
+  } else if (algorithm === 'RC4') {
+    explanationHTML = `
+      <p>
+        <b>Rumus: </b>Ciphertext = RC4_encrypt(Plaintext, Key)<br><br>
+        <b>Kunci: </b>Kunci acak sepanjang 40 hingga 2048 bit digunakan.<br><br>
+        <b>Penjelasan: </b>RC4 adalah stream cipher yang terkenal dan banyak digunakan. Meskipun RC4 sangat cepat, namun beberapa kelemahan dalam implementasi membuatnya kurang disarankan untuk penggunaan modern.<br>
+        
+    </p>
+      <img src="https://example.com/rc4-diagram.png" alt="RC4 Diagram" style="max-width:100%;">
+    `;
+  }
+
+  explanationContainer.innerHTML = explanationHTML;
+}
+
+// Event listener for the "Execute" button
+document.getElementById('execute').addEventListener('click', function() {
+  const algorithm = document.getElementById('algo').value;
+  const mode = document.getElementById('mode').value;
+  const message = document.getElementById('message').value;
+  const key = document.getElementById('key').value;
+  let result;
+
+  // Call the function to update the algorithm explanation only when the execute button is pressed
+  updateAlgorithmExplanation();
+
+  try {
+    if (mode === 'encrypt') {
+      if (algorithm === 'AES') {
+        result = CryptoJS.AES.encrypt(message, key).toString();
+      } else if (algorithm === 'DES') {
+        result = CryptoJS.DES.encrypt(message, key).toString();
+      } else if (algorithm === 'TripleDES') {
+        result = CryptoJS.TripleDES.encrypt(message, key).toString();
+      } else if (algorithm === 'Rabbit') {
+        result = CryptoJS.Rabbit.encrypt(message, key).toString();
+      } else if (algorithm === 'RC4') {
+        result = CryptoJS.RC4.encrypt(message, key).toString();
+      }
+    } else if (mode === 'decrypt') {
+      if (algorithm === 'AES') {
+        result = CryptoJS.AES.decrypt(message, key).toString(CryptoJS.enc.Utf8);
+      } else if (algorithm === 'DES') {
+        result = CryptoJS.DES.decrypt(message, key).toString(CryptoJS.enc.Utf8);
+      } else if (algorithm === 'TripleDES') {
+        result = CryptoJS.TripleDES.decrypt(message, key).toString(CryptoJS.enc.Utf8);
+      } else if (algorithm === 'Rabbit') {
+        result = CryptoJS.Rabbit.decrypt(message, key).toString(CryptoJS.enc.Utf8);
+      } else if (algorithm === 'RC4') {
+        result = CryptoJS.RC4.decrypt(message, key).toString(CryptoJS.enc.Utf8);
+      }
+    }
+
+    document.getElementById('result').value = result || 'Invalid Operation';
+  } catch (error) {
+    document.getElementById('result').value = 'Error: ' + error.message;
+  }
+});
+
+
+
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
