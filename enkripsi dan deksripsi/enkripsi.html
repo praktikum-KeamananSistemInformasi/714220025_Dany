@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Encryption/Decryption Example</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
     <style>
       :root {
@@ -109,7 +110,10 @@
     <div class="container">
       <nav>
         <a href="./../index.html">Home</a>
+        <a href="encryption.html">Encryption/Decryption</a>
+        <a href="stress-meter.html">Stress Meter</a>
       </nav>
+
       <h1>Encryption/Decryption Tool</h1>
       <form id="cryptoForm">
         <label for="algo">Select Algorithm:</label>
@@ -149,69 +153,21 @@
     </div>
 
     <script>
-      // JavaScript code remains unchanged
       function updateAlgorithmExplanation() {
         const algorithm = document.getElementById("algo").value;
         const explanationContainer = document.getElementById("algoExplanation");
         let explanationHTML = "";
 
         if (algorithm === "AES") {
-          explanationHTML = `
-        <p>
-          <b>Rumus : </b>Ciphertext = AES_encrypt(Plaintext, Key, IV)<br><br>
-          <b>Kunci : </b>Kunci acak sepanjang 256 bit dihasilkan.<br><br>
-          <b>IV : </b>Vektor inisialisasi sepanjang 16 byte yang dihasilkan secara acak.<br><br>
-          <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan AES dengan kunci dan IV.<br><br>
-          <b>Penjelasan : </b>Algoritma enkripsi AES (Advanced Encryption Standard) adalah salah satu algoritma simetris yang paling umum digunakan untuk keamanan data. AES bekerja dengan blok data berukuran tetap (128 bit atau 16 byte), dan kunci enkripsi yang dapat bervariasi antara 128, 192, atau 256 bit.<br>
-        </p>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGK3F_ghixpsvdJqJrUPEeCC6ynx_Yd5xefg&s" alt="AES Diagram" style="max-width:100%;">
-      `;
+          explanationHTML = `<p>AES explanation here...</p>`;
         } else if (algorithm === "DES") {
-          explanationHTML = `
-        <p>
-          <b>Rumus : </b>Ciphertext = DES_encrypt(Plaintext, Key)<br><br>
-          <b>Kunci : </b>Kunci simetris sepanjang 56 bit digunakan.<br><br>
-          <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan DES dalam blok-blok 64 bit.<br><br>
-          <b>Penjelasan : </b>DES (Data Encryption Standard) adalah algoritma enkripsi blok yang bekerja pada blok data sepanjang 64 bit dan menggunakan kunci sepanjang 56 bit. DES sekarang dianggap kurang aman karena panjang kunci yang terlalu pendek.<br>
-        </p>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRChSYCQVChgJN6a8GRmbP2cCV-BzYjI9s1gg&s" alt="DES Diagram" style="max-width:100%;">
-      `;
+          explanationHTML = `<p>DES explanation here...</p>`;
         } else if (algorithm === "TripleDES") {
-          explanationHTML = `
-        <p>
-          <b>Rumus : </b>Ciphertext = TripleDES_encrypt(Plaintext, Key1, Key2, Key3)<br><br>
-          <b>Kunci : </b>Tiga kunci berbeda digunakan, masing-masing sepanjang 56 bit.<br><br>
-          <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan tiga kali proses DES dengan kunci yang berbeda.<br><br>
-          <b>Penjelasan : </b>Triple DES menggunakan algoritma DES tiga kali berturut-turut pada data dengan kunci yang berbeda, sehingga lebih aman daripada DES standar.<br>
-        </p>
-        <img src="https://i.ytimg.com/vi/grCTYkvYxcA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBXVkBacWMryD1FNIAy2-qkfCEP9A" alt="Triple DES Diagram" style="max-width:100%;">
-      `;
+          explanationHTML = `<p>Triple DES explanation here...</p>`;
         } else if (algorithm === "Rabbit") {
-          explanationHTML = `
-        <p>
-          <b>Rumus : </b>Ciphertext = Rabbit_encrypt(Plaintext, Key)<br><br><br>
-          <b>Kunci : </b>Kunci acak sepanjang 128 bit digunakan.<br><br><br>
-          <b>Penjelasan : </b>Algoritma Rabbit Cipher adalah sebuah algoritma kriptografi yang termasuk dalam kategori stream cipher (sandi aliran). Algoritma ini dikembangkan pada tahun 2003 oleh Bart Preneel dan Vincent Rijmen. Salah satu keunggulan utama dari Rabbit Cipher adalah efisiensinya dalam hal kecepatan enkripsi dan dekripsi, terutama pada perangkat keras dengan sumber daya terbatas<br><br><br>
-          <b>Karakteristik : </b><br>
-          - Kecepatan tinggi<br>
-          - Ketahanan terhadap analisis<br>
-          - Kunci 128-bit<br>
-        </p>
-        <img src="https://i.ytimg.com/vi/8rOtO4G2zLw/hqdefault.jpg" alt="Rabbit Diagram" style="max-width:100%;">
-      `;
+          explanationHTML = `<p>Rabbit explanation here...</p>`;
         } else if (algorithm === "RC4") {
-          explanationHTML = `
-        <p>
-          <b>Rumus : </b>Ciphertext = RC4_encrypt(Plaintext, Key)<br><br><br>
-          <b>Kunci : </b>Kunci acak yang dapat bervariasi dari 1 hingga 256 byte.<br><br><br>
-          <b>Penjelasan : </b>RC4 adalah algoritma enkripsi stream yang dirancang oleh Ron Rivest pada tahun 1987. Algoritma ini digunakan dalam berbagai protokol keamanan, termasuk SSL dan WEP. RC4 dikenal karena kesederhanaan dan kecepatannya, meskipun saat ini dianggap tidak aman untuk digunakan dalam aplikasi yang membutuhkan tingkat keamanan tinggi.<br><br><br>
-          <b>Karakteristik : </b><br>
-          - Kecepatan tinggi<br>
-          - Kunci variabel (1-256 byte)<br>
-          - Rentan terhadap analisis<br>
-        </p>
-        <img src="https://www.cryptopp.com/w/images/1/15/Rc4.png" alt="RC4 Diagram" style="max-width:100%;">
-      `;
+          explanationHTML = `<p>RC4 explanation here...</p>`;
         }
         explanationContainer.innerHTML = explanationHTML;
       }
@@ -219,34 +175,121 @@
       document
         .getElementById("algo")
         .addEventListener("change", updateAlgorithmExplanation);
-      updateAlgorithmExplanation(); // Call on page load to show initial explanation
-
-      document.getElementById("execute").addEventListener("click", function () {
+      document.getElementById("execute").addEventListener("click", () => {
         const algorithm = document.getElementById("algo").value;
         const mode = document.getElementById("mode").value;
         const message = document.getElementById("message").value;
         const key = document.getElementById("key").value;
 
-        // Encryption/Decryption logic goes here
-        let result;
-        if (mode === "encrypt") {
-          result =
-            "Hasil enkripsi untuk '" +
-            message +
-            "' dengan kunci '" +
-            key +
-            "' menggunakan algoritma " +
-            algorithm;
-        } else {
-          result =
-            "Hasil dekripsi untuk '" +
-            message +
-            "' dengan kunci '" +
-            key +
-            "' menggunakan algoritma " +
-            algorithm;
+        let result = "";
+
+        try {
+          if (mode === "encrypt") {
+            if (algorithm === "AES") {
+              result = CryptoJS.AES.encrypt(message, key).toString();
+            } else if (algorithm === "DES") {
+              result = CryptoJS.DES.encrypt(message, key).toString();
+            } else if (algorithm === "TripleDES") {
+              result = CryptoJS.TripleDES.encrypt(message, key).toString();
+            } else if (algorithm === "Rabbit") {
+              result = CryptoJS.Rabbit.encrypt(message, key).toString();
+            } else if (algorithm === "RC4") {
+              result = CryptoJS.RC4.encrypt(message, key).toString();
+            }
+          } else {
+            if (algorithm === "AES") {
+              result = CryptoJS.AES.decrypt(message, key).toString(
+                CryptoJS.enc.Utf8
+              );
+            } else if (algorithm === "DES") {
+              result = CryptoJS.DES.decrypt(message, key).toString(
+                CryptoJS.enc.Utf8
+              );
+            } else if (algorithm === "TripleDES") {
+              result = CryptoJS.TripleDES.decrypt(message, key).toString(
+                CryptoJS.enc.Utf8
+              );
+            } else if (algorithm === "Rabbit") {
+              result = CryptoJS.Rabbit.decrypt(message, key).toString(
+                CryptoJS.enc.Utf8
+              );
+            } else if (algorithm === "RC4") {
+              result = CryptoJS.RC4.decrypt(message, key).toString(
+                CryptoJS.enc.Utf8
+              );
+            }
+          }
+        } catch (error) {
+          result = "Error during encryption/decryption. Please check inputs.";
         }
+
         document.getElementById("result").value = result;
+      });
+
+      function updateAlgorithmExplanation() {
+        const algorithm = document.getElementById("algo").value;
+        const explanationContainer = document.getElementById("algoExplanation");
+        let explanationHTML = "";
+
+        if (algorithm === "AES") {
+          explanationHTML = `
+            <p>
+              <b>Rumus : </b>Ciphertext = AES_encrypt(Plaintext, Key, IV)<br><br>
+              <b>Kunci : </b>Kunci acak sepanjang 256 bit dihasilkan.<br><br>
+              <b>IV : </b>Vektor inisialisasi sepanjang 16 byte yang dihasilkan secara acak.<br><br>
+              <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan AES dengan kunci dan IV.<br><br>
+              <b>Penjelasan : </b>Algoritma enkripsi AES (Advanced Encryption Standard) adalah salah satu algoritma simetris yang paling umum digunakan untuk keamanan data. AES bekerja dengan blok data berukuran tetap (128 bit atau 16 byte), dan kunci enkripsi yang dapat bervariasi antara 128, 192, atau 256 bit.<br>
+            </p>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGK3F_ghixpsvdJqJrUPEeCC6ynx_Yd5xefg&s" alt="AES Diagram" style="max-width:100%;">
+          `;
+        } else if (algorithm === "DES") {
+          explanationHTML = `
+            <p>
+              <b>Rumus : </b>Ciphertext = DES_encrypt(Plaintext, Key)<br><br>
+              <b>Kunci : </b>Kunci simetris sepanjang 56 bit digunakan.<br><br>
+              <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan DES dalam blok-blok 64 bit.<br><br>
+              <b>Penjelasan : </b>DES (Data Encryption Standard) adalah algoritma enkripsi blok yang bekerja pada blok data sepanjang 64 bit dan menggunakan kunci sepanjang 56 bit. DES sekarang dianggap kurang aman karena panjang kunci yang terlalu pendek.<br>
+            </p>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRChSYCQVChgJN6a8GRmbP2cCV-BzYjI9s1gg&s" alt="DES Diagram" style="max-width:100%;">
+          `;
+        } else if (algorithm === "TripleDES") {
+          explanationHTML = `
+            <p>
+              <b>Rumus : </b>Ciphertext = TripleDES_encrypt(Plaintext, Key1, Key2, Key3)<br><br>
+              <b>Kunci : </b>Tiga kunci berbeda digunakan, masing-masing sepanjang 56 bit.<br><br>
+              <b>Enkripsi : </b>Teks biasa dienkripsi menggunakan tiga kali proses DES dengan kunci yang berbeda.<br><br>
+              <b>Penjelasan : </b>Triple DES menggunakan algoritma DES tiga kali berturut-turut pada data dengan kunci yang berbeda, sehingga lebih aman daripada DES standar.<br>
+            </p>
+            <img src="https://i.ytimg.com/vi/grCTYkvYxcA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBXVkBacWMryD1FNIAy2-qkfCEP9A" alt="Triple DES Diagram" style="max-width:100%;">
+          `;
+        } else if (algorithm === "Rabbit") {
+          explanationHTML = `
+            <p>
+              <b>Rumus : </b>Ciphertext = Rabbit_encrypt(Plaintext, Key, IV)<br><br>
+              <b>Kunci : </b>Kunci sepanjang 128 bit.<br><br>
+              <b>Enkripsi : </b>Rabbit mengenkripsi data dengan cara yang cepat dan cocok untuk aplikasi real-time.<br><br>
+              <b>Penjelasan : </b>Rabbit adalah algoritma stream cipher yang cocok untuk aplikasi yang memerlukan kecepatan tinggi.<br>
+            </p>
+            <img src="https://www.researchgate.net/profile/Mohamed-Sherif-14/publication/281312891/figure/fig6/AS:284946376646660@1444901642803/Rabbit-cipher-state-machine.png" alt="Rabbit Diagram" style="max-width:100%;">
+          `;
+        } else if (algorithm === "RC4") {
+          explanationHTML = `
+            <p>
+              <b>Rumus : </b>Ciphertext = RC4_encrypt(Plaintext, Key)<br><br>
+              <b>Kunci : </b>Kunci variabel, biasanya antara 40 hingga 2048 bit.<br><br>
+              <b>Enkripsi : </b>RC4 bekerja sebagai stream cipher, meng-enkripsi satu bit pada satu waktu.<br><br>
+              <b>Penjelasan : </b>RC4 adalah algoritma stream cipher terkenal yang dikenal karena kecepatannya. Meskipun RC4 tidak lagi dianggap sangat aman untuk beberapa aplikasi, namun masih digunakan dalam beberapa situasi tertentu.<br>
+            </p>`;
+        }
+
+        explanationContainer.innerHTML = explanationHTML;
+        explanationContainer.style.display = "block"; // Tampilkan elemen
+      }
+
+      document.getElementById("execute").addEventListener("click", function () {
+        const result = document.getElementById("result");
+        // Tampilkan explanation ketika tombol "Result" ditekan
+        updateAlgorithmExplanation();
       });
     </script>
   </body>
