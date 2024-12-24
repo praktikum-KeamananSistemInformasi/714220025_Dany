@@ -21,7 +21,7 @@ document.getElementById("submit").addEventListener("click", function () {
     discoverability,
   };
 
-  fetch("https://my-backend-app.vercel.app/analyze", {
+  fetch("https://mitigasi-1t6xch229-danymarufs-projects.vercel.app/analyze", {
     // Ganti dengan URL backend di Vercel
     method: "POST",
     headers: { "Content-Type": "application/json" },
