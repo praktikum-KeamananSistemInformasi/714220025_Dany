@@ -4,7 +4,12 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+// Middleware CORS
+const corsOptions = {
+  origin: "https://praktikum-keamanansisteminformasi.github.io", // URL GitHub Pages Anda
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.post("/analyze", async (req, res) => {
@@ -32,6 +37,7 @@ app.post("/analyze", async (req, res) => {
   `;
 
   try {
+    // Panggil model Hugging Face (ganti sesuai konfigurasi Anda)
     const response = await query({ inputs: prompt });
     res.json({ analysis: response.generated_text });
   } catch (error) {
