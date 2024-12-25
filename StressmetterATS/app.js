@@ -22,7 +22,7 @@ document.getElementById("submit").addEventListener("click", function () {
   };
 
   fetch(
-    "https://utsmitigasi-56xq72v66-danymarufs-projects.vercel.app//analyze",
+    "https://utsmitigasi-56xq72v66-danymarufs-projects.vercel.app/analyze",
     {
       // Ganti dengan URL backend di Vercel
       method: "POST",
