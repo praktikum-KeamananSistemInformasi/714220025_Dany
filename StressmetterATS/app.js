@@ -21,12 +21,15 @@ document.getElementById("submit").addEventListener("click", function () {
     discoverability,
   };
 
-  fetch("https://mitigasi-1t6xch229-danymarufs-projects.vercel.app/analyze", {
-    // Ganti dengan URL backend di Vercel
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  })
+  fetch(
+    "https://utsmitigasi-56xq72v66-danymarufs-projects.vercel.app//analyze",
+    {
+      // Ganti dengan URL backend di Vercel
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }
+  )
     .then((response) => response.json())
     .then((data) => {
       const resultDiv = document.getElementById("result");
