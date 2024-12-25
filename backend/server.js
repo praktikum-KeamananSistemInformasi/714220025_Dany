@@ -1,3 +1,4 @@
+// Import libraries
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
@@ -8,7 +9,9 @@ const port = process.env.PORT || 3000;
 
 // Middleware CORS
 const corsOptions = {
-  origin: "https://praktikum-keamanansisteminformasi.github.io", // URL GitHub Pages Anda
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -21,31 +24,41 @@ app.get("/", (req, res) => {
   );
 });
 
-// Fungsi query untuk memanggil API Hugging Face
+// Fungsi query untuk memanggil API GPT-4
 async function query(data) {
-  const apiUrl =
-    "https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B";
-
+  const apiUrl = "https://api.openai.com/v1/chat/completions"; // Endpoint OpenAI API
   try {
-    const response = await axios.post(apiUrl, data, {
-      headers: {
-        Authorization: `Bearer ${process.env.HUGGING_FACE_API_KEY}`,
-        "Content-Type": "application/json",
+    const response = await axios.post(
+      apiUrl,
+      {
+        model: "gpt-4",
+        messages: [
+          { role: "system", content: "You are a security analyst." },
+          { role: "user", content: data.prompt },
+        ],
+        max_tokens: 500,
+        temperature: 0.7,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        timeout: 20000, // Timeout setelah 8 detik
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(
-      "Error saat memanggil API Hugging Face:",
+      "Error saat memanggil API OpenAI:",
       error.response?.data || error.message
     );
-    throw error; // Pastikan error dilempar agar bisa ditangkap di endpoint
+    throw error;
   }
 }
 
 // Route untuk analisis
 app.post("/analyze", async (req, res) => {
-  // Pastikan body dari permintaan berisi data yang diharapkan
   const {
     asset,
     stride,
@@ -56,44 +69,45 @@ app.post("/analyze", async (req, res) => {
     discoverability,
   } = req.body;
 
-  // Validasi input untuk memastikan semua data ada
   if (
     !asset ||
     !stride ||
-    !damage ||
-    !reproducibility ||
-    !exploitability ||
-    !affectedUsers ||
-    !discoverability
+    damage == null ||
+    reproducibility == null ||
+    exploitability == null ||
+    affectedUsers == null ||
+    discoverability == null
   ) {
     return res
       .status(400)
-      .json({ error: "Semua parameter harus diisi dalam request body." });
+      .json({ error: "Semua parameter harus diisi dan valid." });
   }
 
-  // Membuat prompt untuk analisis
   const prompt = `
-    Analisis keamanan:
-    - Aset: ${asset}
-    - STRIDE: ${stride}
-    - Damage: ${damage}
-    - Reproducibility: ${reproducibility}
-    - Exploitability: ${exploitability}
-    - Affected Users: ${affectedUsers}
-    - Discoverability: ${discoverability}
+Analisis risiko keamanan:
+- Aset: ${asset}
+- STRIDE: ${stride}
+- Damage: ${damage}
+- Reproducibility: ${reproducibility}
+- Exploitability: ${exploitability}
+- Affected Users: ${affectedUsers}
+- Discoverability: ${discoverability}
 
-    Berikan analisis risiko dan rekomendasi mitigasi yang sesuai.
+Analisis harus mencakup:
+1. Penilaian tingkat risiko (rendah, sedang, tinggi).
+2. Rekomendasi mitigasi yang jelas dan spesifik.
   `;
 
   try {
-    // Memanggil fungsi query untuk mendapatkan analisis
-    const response = await query({ inputs: prompt });
-
-    // Mengirimkan hasil analisis ke klien
-    res.json({ analysis: response[0]?.generated_text || "Tidak ada hasil." });
+    console.log("Memulai permintaan ke OpenAI API...");
+    const response = await query({ prompt });
+    console.log("Response diterima:", response);
+    res.json({
+      analysis: response.choices[0]?.message?.content || "Tidak ada hasil.",
+    });
   } catch (error) {
-    console.error("Error di endpoint /analyze:", error.message);
-    res.status(500).json({ error: "Terjadi kesalahan saat menganalisis." });
+    console.error("Error saat memanggil API:", error.message);
+    res.status(500).json({ error: "Terjadi kesalahan." });
   }
 });
 
