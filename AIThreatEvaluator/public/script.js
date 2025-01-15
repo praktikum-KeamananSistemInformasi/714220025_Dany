@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const historyList = document.getElementById("historyList");
 
   // Fungsi untuk menyimpan riwayat hasil analisis
-  const saveToHistory = (stride, dreadScores, analysis) => {
+  const saveToHistory = (context, stride, dreadScores, analysis) => {
     const history = JSON.parse(localStorage.getItem("analysisHistory")) || [];
-    history.push({ stride, dreadScores, analysis });
+    history.push({ context, stride, dreadScores, analysis });
     localStorage.setItem("analysisHistory", JSON.stringify(history));
     displayHistory();
   };
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "shadow"
       );
 
-      // Buat elemen HTML untuk menampilkan data riwayat secara ringkas
+      // Tambahkan context ke tampilan riwayat
       li.innerHTML = `
         <div class="flex justify-between items-center">
           <h4 class="font-bold text-indigo-600">Analisis #${index + 1}</h4>
@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
             Lihat Detail
           </button>
         </div>
+        <p><strong>Konteks:</strong> ${item.context}</p>
         <p><strong>STRIDE:</strong> ${item.stride}</p>
         <div id="detail${index}" class="hidden mt-2">
           <p><strong>DREAD Scores:</strong></p>
@@ -205,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="p-4 rounded ${colorClass}">
         <p><strong>Total Skor DREAD:</strong> ${totalScore}</p>
         <p><strong>Tingkat Ancaman:</strong> ${threatLevel}</p>
-        <p><strong>Tingkat Ancaman:</strong> ${context}</p>
+        <p><strong>Konteks:</strong> ${context}</p>
         <p>${data.analysis}</p>
       </div>
     `;

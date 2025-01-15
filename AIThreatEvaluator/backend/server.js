@@ -49,7 +49,18 @@ app.post("/analyze", async (req, res) => {
     });
 
     const analysis = response.choices[0].message.content.trim();
-    res.json({ analysis });
+    const formattedAnalysis = `
+        <h3 class="font-bold text-lg">Analisis Ancaman:</h3>
+        <p>${analysis.split("\n").join("</p><p>")}</p>
+        <h3 class="font-bold text-lg mt-4">Saran Mitigasi:</h3>
+        <ul class="list-disc list-inside">
+          <li>Audit konfigurasi secara berkala.</li>
+          <li>Implementasi enkripsi data.</li>
+          <li>Gunakan firewall dan sistem pemantauan jaringan.</li>
+        </ul>
+      `;
+
+    res.json({ analysis: formattedAnalysis });
   } catch (error) {
     console.error("Error processing request:", error.message);
     res.status(500).json({ error: "Terjadi kesalahan saat memproses data." });
