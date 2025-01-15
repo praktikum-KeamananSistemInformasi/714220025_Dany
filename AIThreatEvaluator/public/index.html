@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ThreatEvaluator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body class="bg-gray-100 text-gray-900">
+    <div class="max-w-4xl mx-auto py-10">
+      <h1 class="text-3xl font-bold mb-5 text-center">ThreatEvaluator</h1>
+      <div class="bg-white p-6 shadow rounded-lg">
+        <form id="threatForm" class="space-y-5">
+          <div>
+            <label for="stride" class="block text-lg font-medium"
+              >Kategori STRIDE</label
+            >
+            <select
+              id="stride"
+              class="block w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-indigo-500"
+            >
+              <option value="Spoofing">Spoofing</option>
+              <option value="Tampering">Tampering</option>
+              <option value="Repudiation">Repudiation</option>
+              <option value="Information Disclosure">
+                Information Disclosure
+              </option>
+              <option value="Denial of Service">Denial of Service</option>
+              <option value="Elevation of Privileges">
+                Elevation of Privileges
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-lg font-medium">Nilai DREAD (1-10)</label>
+            <div id="dreadInputs" class="space-y-4">
+              <div>
+                <label for="damage" class="block">Damage Potential</label>
+                <input
+                  type="number"
+                  id="damage"
+                  class="block w-full mt-2 p-2 border border-gray-300 rounded-lg"
+                  min="1"
+                  max="10"
+                  value="1"
+                />
+              </div>
+              <div>
+                <label for="reproducibility" class="block"
+                  >Reproducibility</label
+                >
+                <input
+                  type="number"
+                  id="reproducibility"
+                  class="block w-full mt-2 p-2 border border-gray-300 rounded-lg"
+                  min="1"
+                  max="10"
+                  value="1"
+                />
+              </div>
+              <div>
+                <label for="exploitability" class="block">Exploitability</label>
+                <input
+                  type="number"
+                  id="exploitability"
+                  class="block w-full mt-2 p-2 border border-gray-300 rounded-lg"
+                  min="1"
+                  max="10"
+                  value="1"
+                />
+              </div>
+              <div>
+                <label for="affectedUsers" class="block">Affected Users</label>
+                <input
+                  type="number"
+                  id="affectedUsers"
+                  class="block w-full mt-2 p-2 border border-gray-300 rounded-lg"
+                  min="1"
+                  max="10"
+                  value="1"
+                />
+              </div>
+              <div>
+                <label for="discoverability" class="block"
+                  >Discoverability</label
+                >
+                <input
+                  type="number"
+                  id="discoverability"
+                  class="block w-full mt-2 p-2 border border-gray-300 rounded-lg"
+                  min="1"
+                  max="10"
+                  value="1"
+                />
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            id="submitBtn"
+            class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700"
+          >
+            Submit
+          </button>
+        </form>
+
+        <canvas id="dreadChart" class="mt-5 hidden"></canvas>
+        <div id="result" class="mt-10 hidden">
+          <h2 class="text-xl font-bold mb-3">Hasil Analisis</h2>
+          <div
+            id="analysisText"
+            class="text-gray-800 leading-relaxed space-y-4 bg-gray-50 p-5 rounded-lg shadow-md"
+          ></div>
+        </div>
+        <div id="history" class="mt-10">
+          <h2 class="text-xl font-bold mb-3">Riwayat Analisis</h2>
+          <ul id="historyList" class="list-disc pl-5 text-gray-800"></ul>
+        </div>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
