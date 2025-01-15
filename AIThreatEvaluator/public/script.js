@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   submitBtn.addEventListener("click", async () => {
     // Ambil nilai input
+    const context = document.getElementById("context").value; // Ambil konteks ancaman
     const stride = document.getElementById("stride").value;
     const dreadScores = {
       damage: parseInt(document.getElementById("damage").value, 10),
@@ -144,6 +145,15 @@ document.addEventListener("DOMContentLoaded", () => {
         10
       ),
     };
+
+    if (!context) {
+      Swal.fire({
+        icon: "error",
+        title: "Konteks Wajib Diisi",
+        text: "Harap masukkan konteks ancaman.",
+      });
+      return;
+    }
 
     // Hitung total skor DREAD
     const totalScore =
@@ -182,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch("http://localhost:3000/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stride, dreadScores }),
+        body: JSON.stringify({ context, stride, dreadScores }),
       });
 
       const data = await response.json();
@@ -195,13 +205,14 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="p-4 rounded ${colorClass}">
         <p><strong>Total Skor DREAD:</strong> ${totalScore}</p>
         <p><strong>Tingkat Ancaman:</strong> ${threatLevel}</p>
+        <p><strong>Tingkat Ancaman:</strong> ${context}</p>
         <p>${data.analysis}</p>
       </div>
     `;
       resultDiv.classList.remove("hidden");
 
       // Simpan ke riwayat dan render chart
-      saveToHistory(stride, dreadScores, data.analysis);
+      saveToHistory(context, stride, dreadScores, data.analysis);
       renderChart(dreadScores);
 
       // Tampilkan notifikasi sukses menggunakan SweetAlert2
