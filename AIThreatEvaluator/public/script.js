@@ -17,13 +17,71 @@ document.addEventListener("DOMContentLoaded", () => {
   // Fungsi untuk menampilkan riwayat
   const displayHistory = () => {
     const history = JSON.parse(localStorage.getItem("analysisHistory")) || [];
-    historyList.innerHTML = "";
+    historyList.innerHTML = ""; // Kosongkan daftar riwayat
+
+    if (history.length === 0) {
+      historyList.innerHTML = "<li>Belum ada riwayat analisis.</li>";
+      return;
+    }
+
     history.forEach((item, index) => {
       const li = document.createElement("li");
-      li.textContent = `#${index + 1} - STRIDE: ${
-        item.stride
-      }, DREAD: ${JSON.stringify(item.dreadScores)}`;
+      li.classList.add(
+        "mb-3",
+        "p-3",
+        "border",
+        "rounded-lg",
+        "bg-gray-100",
+        "shadow"
+      );
+
+      // Buat elemen HTML untuk menampilkan data riwayat secara ringkas
+      li.innerHTML = `
+        <div class="flex justify-between items-center">
+          <h4 class="font-bold text-indigo-600">Analisis #${index + 1}</h4>
+          <button 
+            class="text-indigo-500 hover:underline focus:outline-none" 
+            id="toggleDetail${index}">
+            Lihat Detail
+          </button>
+        </div>
+        <p><strong>STRIDE:</strong> ${item.stride}</p>
+        <div id="detail${index}" class="hidden mt-2">
+          <p><strong>DREAD Scores:</strong></p>
+          <ul class="list-disc ml-6">
+            <li><strong>Damage:</strong> ${item.dreadScores.damage}</li>
+            <li><strong>Reproducibility:</strong> ${
+              item.dreadScores.reproducibility
+            }</li>
+            <li><strong>Exploitability:</strong> ${
+              item.dreadScores.exploitability
+            }</li>
+            <li><strong>Affected Users:</strong> ${
+              item.dreadScores.affectedUsers
+            }</li>
+            <li><strong>Discoverability:</strong> ${
+              item.dreadScores.discoverability
+            }</li>
+          </ul>
+          <p class="mt-2"><strong>Hasil Analisis:</strong></p>
+          <p class="text-gray-700">${item.analysis}</p>
+        </div>
+      `;
+
       historyList.appendChild(li);
+
+      // Tambahkan event listener untuk toggle detail
+      const toggleButton = document.getElementById(`toggleDetail${index}`);
+      const detailDiv = document.getElementById(`detail${index}`);
+      toggleButton.addEventListener("click", () => {
+        if (detailDiv.classList.contains("hidden")) {
+          detailDiv.classList.remove("hidden");
+          toggleButton.textContent = "Sembunyikan Detail";
+        } else {
+          detailDiv.classList.add("hidden");
+          toggleButton.textContent = "Lihat Detail";
+        }
+      });
     });
   };
 
@@ -87,6 +145,28 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     };
 
+    // Hitung total skor DREAD
+    const totalScore =
+      dreadScores.damage +
+      dreadScores.reproducibility +
+      dreadScores.exploitability +
+      dreadScores.affectedUsers +
+      dreadScores.discoverability;
+
+    // Tentukan warna berdasarkan tingkat ancaman
+    let threatLevel = "";
+    let colorClass = "";
+    if (totalScore >= 35) {
+      threatLevel = "Tinggi";
+      colorClass = "bg-red-500 text-white";
+    } else if (totalScore >= 20) {
+      threatLevel = "Sedang";
+      colorClass = "bg-yellow-400 text-black";
+    } else {
+      threatLevel = "Rendah";
+      colorClass = "bg-green-500 text-white";
+    }
+
     // Tampilkan dialog loading menggunakan SweetAlert2
     Swal.fire({
       title: "Proses Analisis...",
@@ -111,7 +191,13 @@ document.addEventListener("DOMContentLoaded", () => {
       Swal.close();
 
       // Tampilkan hasil analisis
-      analysisText.innerHTML = data.analysis;
+      analysisText.innerHTML = `
+      <div class="p-4 rounded ${colorClass}">
+        <p><strong>Total Skor DREAD:</strong> ${totalScore}</p>
+        <p><strong>Tingkat Ancaman:</strong> ${threatLevel}</p>
+        <p>${data.analysis}</p>
+      </div>
+    `;
       resultDiv.classList.remove("hidden");
 
       // Simpan ke riwayat dan render chart
