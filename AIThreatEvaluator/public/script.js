@@ -5,34 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const analysisText = document.getElementById("analysisText");
   const dreadChart = document.getElementById("dreadChart");
   const historyList = document.getElementById("historyList");
-  const strideSelect = document.getElementById("stride");
-  const strideDetails = document.getElementById("strideDetails");
-  const strideDescription = document.getElementById("strideDescription");
-
-  document.addEventListener("DOMContentLoaded", () => {
-    // Detail deskripsi untuk setiap kategori STRIDE
-    const strideDescriptions = {
-      Spoofing:
-        "Spoofing terjadi ketika aktor jahat menyamar sebagai entitas yang sah untuk mendapatkan akses ke sistem.",
-      Tampering:
-        "Tampering melibatkan pengubahan data atau sistem tanpa otorisasi yang sah.",
-      Repudiation:
-        "Repudiation terjadi ketika pengguna menyangkal telah melakukan tindakan tertentu.",
-      "Information Disclosure":
-        "Information Disclosure adalah pengungkapan data sensitif kepada pihak yang tidak berwenang.",
-      "Denial of Service":
-        "Denial of Service melibatkan penghentian atau penurunan layanan yang disediakan kepada pengguna sah.",
-      "Elevation of Privileges":
-        "Elevation of Privileges adalah peningkatan hak akses pengguna di luar otoritasnya yang sah.",
-    };
-
-    // Event listener untuk menampilkan detail berdasarkan kategori yang dipilih
-    strideSelect.addEventListener("change", () => {
-      const selectedStride = strideSelect.value;
-      strideDescription.textContent = strideDescriptions[selectedStride];
-      strideDetails.classList.remove("hidden");
-    });
-  });
 
   // Fungsi untuk menyimpan riwayat hasil analisis
   const saveToHistory = (context, stride, dreadScores, analysis) => {

@@ -35,14 +35,11 @@
               </option>
             </select>
           </div>
-          
+
           <div
             id="strideDetails"
             class="mt-5 p-4 bg-gray-100 rounded-lg shadow hidden"
           >
-            <h3 class="text-lg font-bold text-indigo-600 mb-2">
-              Detail Kategori STRIDE
-            </h3>
             <p id="strideDescription" class="text-gray-700"></p>
           </div>
 
@@ -62,6 +59,7 @@
                   max="10"
                   value="1"
                 />
+                <p id="damageDesc" class="text-sm text-gray-600 mt-2"></p>
               </div>
               <div>
                 <label for="reproducibility" class="block"
@@ -76,6 +74,10 @@
                   max="10"
                   value="1"
                 />
+                <p
+                  id="reproducibilityDesc"
+                  class="text-sm text-gray-600 mt-2"
+                ></p>
               </div>
               <div>
                 <label for="exploitability" class="block"
@@ -92,6 +94,10 @@
                   max="10"
                   value="1"
                 />
+                <p
+                  id="exploitabilityDesc"
+                  class="text-sm text-gray-600 mt-2"
+                ></p>
               </div>
               <div>
                 <label for="affectedUsers" class="block"
@@ -107,6 +113,10 @@
                   max="10"
                   value="1"
                 />
+                <p
+                  id="affectedUsersDesc"
+                  class="text-sm text-gray-600 mt-2"
+                ></p>
               </div>
               <div>
                 <label for="discoverability" class="block"
@@ -121,6 +131,10 @@
                   max="10"
                   value="1"
                 />
+                <p
+                  id="discoverabilityDesc"
+                  class="text-sm text-gray-600 mt-2"
+                ></p>
               </div>
             </div>
           </div>
@@ -269,5 +283,137 @@
       </div>
     </footer>
     <script src="./script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const strideSelect = document.getElementById("stride");
+        const strideDetails = document.getElementById("strideDetails");
+        const strideDescription = document.getElementById("strideDescription");
+
+        // Detail deskripsi untuk setiap kategori STRIDE
+        const strideDescriptions = {
+          Spoofing:
+            "Spoofing terjadi ketika seorang aktor tidak sah menyamar sebagai entitas yang sah untuk mendapatkan akses atau informasi dari sistem. Contoh: pencurian kredensial atau pemalsuan identitas.",
+          Tampering:
+            "Tampering mengacu pada tindakan pengubahan atau manipulasi data tanpa izin. Contoh: pengubahan file konfigurasi atau data transaksi.",
+          Repudiation:
+            "Repudiation adalah situasi ketika pengguna menyangkal telah melakukan suatu tindakan, dan sistem tidak memiliki bukti yang cukup untuk memverifikasinya. Contoh: tidak adanya catatan log yang sah.",
+          "Information Disclosure":
+            "Information Disclosure melibatkan pengungkapan data sensitif, seperti kata sandi atau informasi pribadi, kepada pihak yang tidak berwenang. Contoh: kebocoran data dalam komunikasi tidak terenkripsi.",
+          "Denial of Service":
+            "Denial of Service (DoS) adalah serangan yang bertujuan untuk membuat layanan tidak dapat diakses oleh pengguna yang sah. Contoh: membanjiri server dengan permintaan palsu.",
+          "Elevation of Privileges":
+            "Elevation of Privileges terjadi ketika seorang pengguna dengan hak akses terbatas berhasil mendapatkan hak akses yang lebih tinggi. Contoh: eksploitasi kerentanan untuk menjadi administrator.",
+        };
+
+        // Event listener untuk menampilkan detail berdasarkan kategori yang dipilih
+        strideSelect.addEventListener("change", () => {
+          const selectedStride = strideSelect.value;
+
+          // Validasi apakah kategori STRIDE valid
+          if (strideDescriptions[selectedStride]) {
+            strideDescription.textContent = strideDescriptions[selectedStride];
+            strideDetails.classList.remove("hidden");
+          } else {
+            // Jika kategori tidak valid, sembunyikan detail
+            strideDescription.textContent = "";
+            strideDetails.classList.add("hidden");
+          }
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const dreadDescriptions = {
+          damage: [
+            "Tidak ada kerusakan yang terlihat.",
+            "Kerusakan minimal, tidak memengaruhi pengguna.",
+            "Kerusakan kecil yang mudah diperbaiki.",
+            "Gangguan kecil pada sistem.",
+            "Gangguan sedang dengan efek sementara.",
+            "Kerusakan signifikan, memengaruhi sebagian pengguna.",
+            "Kerusakan besar, memengaruhi mayoritas pengguna.",
+            "Kerusakan serius, memerlukan waktu pemulihan yang lama.",
+            "Kerusakan sangat serius, memengaruhi semua pengguna.",
+            "Kerusakan kritis, sistem tidak dapat digunakan.",
+          ],
+          reproducibility: [
+            "Hampir tidak mungkin untuk direproduksi.",
+            "Sangat sulit direproduksi, membutuhkan kondisi tertentu.",
+            "Sulit direproduksi, memerlukan akses khusus.",
+            "Cukup sulit direproduksi tetapi dapat dilakukan dengan usaha.",
+            "Reproduksi membutuhkan pengetahuan teknis menengah.",
+            "Reproduksi membutuhkan alat tertentu tetapi cukup mudah.",
+            "Reproduksi dapat dilakukan dengan alat yang tersedia.",
+            "Mudah direproduksi oleh pengguna yang terampil.",
+            "Sangat mudah direproduksi tanpa alat khusus.",
+            "Reproduksi sangat sederhana, siapa pun dapat melakukannya.",
+          ],
+          exploitability: [
+            "Eksploitasi hampir tidak mungkin dilakukan.",
+            "Eksploitasi sangat sulit, membutuhkan keahlian tinggi.",
+            "Eksploitasi sulit tetapi mungkin dilakukan.",
+            "Eksploitasi membutuhkan usaha signifikan.",
+            "Eksploitasi membutuhkan keahlian teknis menengah.",
+            "Eksploitasi membutuhkan alat tertentu tetapi cukup mudah.",
+            "Eksploitasi dapat dilakukan dengan alat umum.",
+            "Eksploitasi cukup sederhana untuk pengguna berpengalaman.",
+            "Eksploitasi sangat mudah dilakukan.",
+            "Eksploitasi instan dan sangat mudah dilakukan.",
+          ],
+          affectedUsers: [
+            "Tidak ada pengguna yang terpengaruh.",
+            "Sangat sedikit pengguna yang terpengaruh.",
+            "Beberapa pengguna yang sangat spesifik terpengaruh.",
+            "Sebagian kecil pengguna terpengaruh.",
+            "Pengguna rata-rata terpengaruh.",
+            "Sebagian besar pengguna terpengaruh.",
+            "Hampir semua pengguna terpengaruh.",
+            "Sebagian besar pengguna sistem terpengaruh.",
+            "Semua pengguna terpengaruh secara signifikan.",
+            "Semua pengguna terpengaruh, sistem tidak dapat digunakan.",
+          ],
+          discoverability: [
+            "Hampir tidak mungkin ditemukan.",
+            "Sangat sulit ditemukan, membutuhkan usaha signifikan.",
+            "Sulit ditemukan tanpa alat khusus.",
+            "Cukup sulit ditemukan tetapi memungkinkan.",
+            "Memerlukan pengetahuan teknis untuk ditemukan.",
+            "Dapat ditemukan dengan analisis teknis dasar.",
+            "Relatif mudah ditemukan dengan alat umum.",
+            "Mudah ditemukan oleh pengguna yang berpengalaman.",
+            "Sangat mudah ditemukan oleh siapa saja.",
+            "Sangat jelas dan langsung terlihat.",
+          ],
+        };
+
+        const dreadFields = [
+          "damage",
+          "reproducibility",
+          "exploitability",
+          "affectedUsers",
+          "discoverability",
+        ];
+
+        dreadFields.forEach((field) => {
+          const input = document.getElementById(field);
+          const desc = document.getElementById(`${field}Desc`);
+
+          const updateDescription = () => {
+            const value = parseInt(input.value, 10);
+            const descriptions = dreadDescriptions[field];
+            if (descriptions && descriptions[value - 1]) {
+              desc.textContent = descriptions[value - 1];
+            } else {
+              desc.textContent = "Nilai tidak valid.";
+            }
+          };
+
+          // Inisialisasi deskripsi awal
+          updateDescription();
+
+          // Event listener untuk memperbarui deskripsi
+          input.addEventListener("input", updateDescription);
+        });
+      });
+    </script>
   </body>
 </html>
