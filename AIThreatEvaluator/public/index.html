@@ -10,7 +10,9 @@
   </head>
   <body class="bg-gray-100 text-gray-900 dark:bg-gray-900">
     <div class="max-w-4xl mx-auto py-10">
-      <h1 class="text-3xl font-bold mb-5 text-center text-white">AIThreatEvaluator</h1>
+      <h1 class="text-3xl font-bold mb-5 text-center text-white">
+        AIThreatEvaluator
+      </h1>
       <div class="bg-white p-6 shadow rounded-lg">
         <form id="threatForm" class="space-y-5">
           <div>
@@ -33,12 +35,25 @@
               </option>
             </select>
           </div>
+          
+          <div
+            id="strideDetails"
+            class="mt-5 p-4 bg-gray-100 rounded-lg shadow hidden"
+          >
+            <h3 class="text-lg font-bold text-indigo-600 mb-2">
+              Detail Kategori STRIDE
+            </h3>
+            <p id="strideDescription" class="text-gray-700"></p>
+          </div>
 
           <div>
             <label class="block text-lg font-medium">Nilai DREAD (1-10)</label>
             <div id="dreadInputs" class="space-y-4">
               <div>
-                <label for="damage" class="block">Damage Potential <span class="text-red-900">(Damage Potential)</span></label>
+                <label for="damage" class="block"
+                  >Damage Potential
+                  <span class="text-red-900">(Potensi Kerusakan)</span></label
+                >
                 <input
                   type="number"
                   id="damage"
@@ -50,8 +65,9 @@
               </div>
               <div>
                 <label for="reproducibility" class="block"
-                  >Reproducibility <span class="text-red-900">(Kemungkinan Reproduksi)</span> </label
-                >
+                  >Reproducibility
+                  <span class="text-red-900">(Kemungkinan Reproduksi)</span>
+                </label>
                 <input
                   type="number"
                   id="reproducibility"
@@ -62,7 +78,12 @@
                 />
               </div>
               <div>
-                <label for="exploitability" class="block">Exploitability <span class="text-red-900">(Kemudahan Eksploitasi)</span></label>
+                <label for="exploitability" class="block"
+                  >Exploitability
+                  <span class="text-red-900"
+                    >(Kemudahan Eksploitasi)</span
+                  ></label
+                >
                 <input
                   type="number"
                   id="exploitability"
@@ -73,7 +94,11 @@
                 />
               </div>
               <div>
-                <label for="affectedUsers" class="block">Affected Users<span class="text-red-900"> (Pengguna yang Terdampak)</span></label>
+                <label for="affectedUsers" class="block"
+                  >Affected Users<span class="text-red-900">
+                    (Pengguna yang Terdampak)</span
+                  ></label
+                >
                 <input
                   type="number"
                   id="affectedUsers"
@@ -85,7 +110,8 @@
               </div>
               <div>
                 <label for="discoverability" class="block"
-                  >Discoverability <span class="text-red-900">(Kemudahan Penemuan)</span></label
+                  >Discoverability
+                  <span class="text-red-900">(Kemudahan Penemuan)</span></label
                 >
                 <input
                   type="number"
@@ -97,7 +123,8 @@
                 />
               </div>
             </div>
-          </div><div>
+          </div>
+          <div>
             <label for="context" class="block text-lg font-medium"
               >Konteks Ancaman (misal: Perbankan, E-commerce, Kesehatan)</label
             >
@@ -114,7 +141,7 @@
             id="submitBtn"
             class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700"
           >
-            Submit
+            Analisis With AI Now
           </button>
         </form>
 
