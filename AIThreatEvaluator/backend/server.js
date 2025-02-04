@@ -9,20 +9,23 @@ require("dotenv").config();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: "*", // Atau bisa diganti dengan URL frontend jika spesifik
-    methods: ["GET", "POST"],
-  })
-);
 
+const corsOptions = {
+  origin: "https://praktikum-keamanansisteminformasi.github.io", // Ganti dengan domain frontend kamu
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true,
+};
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
+app.options("*", cors(corsOptions));
 // Konfigurasi API GPT
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 // Endpoint untuk analisis ancaman
-app.post("/analyze", async (req, res) => {
+app.post("/api/analyze", async (req, res) => {
   const { context, stride, dreadScores } = req.body;
 
   if (!context || !stride || !dreadScores) {
