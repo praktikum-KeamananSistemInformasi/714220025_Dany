@@ -5,6 +5,7 @@ const OpenAI = require("openai");
 
 const app = express();
 const port = 3000;
+require("dotenv").config();
 
 // Middleware
 app.use(bodyParser.json());
@@ -12,8 +13,7 @@ app.use(cors()); // Mengizinkan akses dari frontend
 
 // Konfigurasi API GPT
 const openai = new OpenAI({
-  apiKey:
-    "", // Masukkan API Key Anda di sini
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 // Endpoint untuk analisis ancaman
