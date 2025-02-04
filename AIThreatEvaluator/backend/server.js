@@ -4,12 +4,17 @@ const cors = require("cors");
 const OpenAI = require("openai");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 require("dotenv").config();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors()); // Mengizinkan akses dari frontend
+app.use(
+  cors({
+    origin: "*", // Atau bisa diganti dengan URL frontend jika spesifik
+    methods: ["GET", "POST"],
+  })
+);
 
 // Konfigurasi API GPT
 const openai = new OpenAI({
@@ -69,5 +74,5 @@ app.post("/analyze", async (req, res) => {
 
 // Jalankan server
 app.listen(port, () => {
-  console.log(`Server berjalan di http://localhost:${port}`);
+  console.log(`Server berjalan di port ${port}`);
 });
