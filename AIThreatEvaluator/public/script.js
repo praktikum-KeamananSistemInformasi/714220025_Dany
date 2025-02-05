@@ -190,14 +190,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Kirim data ke server
     try {
-      const response = await fetch(
-        "https://ai-threat-evaluator.vercel.app/api/analyze",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ context, stride, dreadScores }),
-        }
-      );
+      const response = await fetch("http://localhost:3000/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ context, stride, dreadScores }),
+      });
 
       const data = await response.json();
 

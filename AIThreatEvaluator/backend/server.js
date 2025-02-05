@@ -4,28 +4,19 @@ const cors = require("cors");
 const OpenAI = require("openai");
 
 const app = express();
-const port = process.env.PORT || 3000;
-require("dotenv").config();
+const port = 3000;
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors()); // Mengizinkan akses dari frontend
 
-const corsOptions = {
-  origin: "https://praktikum-keamanansisteminformasi.github.io", // Ganti dengan domain frontend kamu
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Authorization",
-  credentials: true,
-};
-app.use(cors(corsOptions));
-app.use(bodyParser.json());
-app.options("*", cors(corsOptions));
 // Konfigurasi API GPT
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: "API GPT", // Masukkan API Key Anda di sini
 });
 
 // Endpoint untuk analisis ancaman
-app.post("/api/analyze", async (req, res) => {
+app.post("/analyze", async (req, res) => {
   const { context, stride, dreadScores } = req.body;
 
   if (!context || !stride || !dreadScores) {
@@ -77,5 +68,5 @@ app.post("/api/analyze", async (req, res) => {
 
 // Jalankan server
 app.listen(port, () => {
-  console.log(`Server berjalan di port ${port}`);
+  console.log(`Server berjalan di http://localhost:${port}`);
 });
