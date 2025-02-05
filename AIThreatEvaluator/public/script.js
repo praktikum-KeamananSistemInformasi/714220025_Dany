@@ -156,6 +156,25 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (!stride) {
+      Swal.fire({
+        icon: "error",
+        title: "STRIDE Wajib Dipilih",
+        text: "Harap pilih metode STRIDE yang sesuai.",
+      });
+      return;
+    }
+
+    for (const [key, value] of Object.entries(dreadScores)) {
+      if (isNaN(value) || value < 0 || value > 10) {
+        Swal.fire({
+          icon: "error",
+          title: "Input Tidak Valid",
+          text: `Skor ${key} harus berupa angka antara 0 hingga 10.`,
+        });
+        return;
+      }
+    }
     // Hitung total skor DREAD
     const totalScore =
       dreadScores.damage +
